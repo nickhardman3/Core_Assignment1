@@ -327,16 +327,19 @@ void parallelrandompoints(int N)
     #pragma omp parallel for reduction(+:closest_total,furthest_total)
     for (int i=0; i<N; ++i)
     {
+        double local_closest = std::numeric_limits<double>::max();
+        double local_furthest = std::numeric_limits<double>::lowest();
+
         for (int j=0; j<N; ++j)
         {
             if (i==j) continue;
-            double dist = distancecalc(data[i], data[j]);
-            #pragma omp critical
-            {
-                closestdist[i]=std::min(closestdist[i], dist);
-                furthestdist[i]=std::max(furthestdist[i], dist);
-            }
+            double dist = wrapdistance(data[i], data[j]);
+            
+            local_closest = std::min(local_closest, dist);
+            local_furthest = std::max(local_furthest, dist);
         }
+        closestdist[i] = local_closest;
+        furthestdist[i] = local_furthest;
 
         closest_total+=closestdist[i];
         furthest_total+=furthestdist[i];
@@ -394,16 +397,19 @@ void parallelcsvpoints(int N)
     #pragma omp parallel for reduction(+:closest_total,furthest_total)
     for (int i=0; i<N; ++i)
     {
+        double local_closest = std::numeric_limits<double>::max();
+        double local_furthest = std::numeric_limits<double>::lowest();
+
         for (int j=0; j<N; ++j)
         {
             if (i==j) continue;
-            double dist = distancecalc(data[i], data[j]);
-            #pragma omp critical
-            {
-                closestdist[i]=std::min(closestdist[i], dist);
-                furthestdist[i]=std::max(furthestdist[i], dist);
-            }
+            double dist = wrapdistance(data[i], data[j]);
+            
+            local_closest = std::min(local_closest, dist);
+            local_furthest = std::max(local_furthest, dist);
         }
+        closestdist[i] = local_closest;
+        furthestdist[i] = local_furthest;
 
         closest_total+=closestdist[i];
         furthest_total+=furthestdist[i];
@@ -460,16 +466,19 @@ void parallelwraprandompoints(int N)
     #pragma omp parallel for reduction(+:closest_total,furthest_total)
     for (int i=0; i<N; ++i)
     {
+        double local_closest = std::numeric_limits<double>::max();
+        double local_furthest = std::numeric_limits<double>::lowest();
+
         for (int j=0; j<N; ++j)
         {
             if (i==j) continue;
             double dist = wrapdistance(data[i], data[j]);
-            #pragma omp critical
-            {
-                closestdist[i]=std::min(closestdist[i], dist);
-                furthestdist[i]=std::max(furthestdist[i], dist);
-            }
+            
+            local_closest = std::min(local_closest, dist);
+            local_furthest = std::max(local_furthest, dist);
         }
+        closestdist[i] = local_closest;
+        furthestdist[i] = local_furthest;
 
         closest_total+=closestdist[i];
         furthest_total+=furthestdist[i];
@@ -528,16 +537,19 @@ void parallelwrapcsvpoints(int N)
     #pragma omp parallel for reduction(+:closest_total,furthest_total)
     for (int i=0; i<N; ++i)
     {
+        double local_closest = std::numeric_limits<double>::max();
+        double local_furthest = std::numeric_limits<double>::lowest();
+
         for (int j=0; j<N; ++j)
         {
             if (i==j) continue;
             double dist = wrapdistance(data[i], data[j]);
-            #pragma omp critical
-            {
-                closestdist[i]=std::min(closestdist[i], dist);
-                furthestdist[i]=std::max(furthestdist[i], dist);
-            }
+            
+            local_closest = std::min(local_closest, dist);
+            local_furthest = std::max(local_furthest, dist);
         }
+        closestdist[i] = local_closest;
+        furthestdist[i] = local_furthest;
 
         closest_total+=closestdist[i];
         furthest_total+=furthestdist[i];
