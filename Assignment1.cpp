@@ -583,6 +583,11 @@ void parallelwrapcsvpoints(int N)
 
 int main()
 {
+    std::cout << "How many threads? (1-8)";
+    int threads;
+    std::cin >> threads;
+    omp_set_num_threads(threads);
+    
     std::cout << "Choose input type (1 = Random object locations, 2 = CSV object locations)";
     int choice;
     std::cin >> choice;
